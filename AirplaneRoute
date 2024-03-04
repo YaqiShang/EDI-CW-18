@@ -1,0 +1,35 @@
+public class AirplaneRoute implements Comparable<AirplaneRoute> {
+
+    // Instance variables
+    private String code;              // Unique identifier for the flight
+    private String endDestination;    // Final destination of the flight
+    private String airlineName;       // Name of the airline operating the flight
+    private int passengerCapacity;    // Max number of passengers
+    private double luggageWeightLimit;    // Max weight of luggage allowed
+    private double luggageVolumeLimit;    // Max volume of luggage allowed
+
+    // Constructor
+    public AirplaneRoute(String flightCode, String dest, String carrier, int capacity, double weightLimit, double volumeLimit) {
+        this.code = flightCode;
+        this.endDestination = dest;
+        this.airlineName = carrier;
+        this.passengerCapacity = capacity;
+        this.luggageWeightLimit = weightLimit;
+        this.luggageVolumeLimit = volumeLimit;
+    }
+
+    // Implementing compareTo for sorting, for example in a TreeSet
+    @Override
+    public int compareTo(AirplaneRoute other) {
+        return this.code.compareTo(other.code);
+    }
+
+    // Getter methods
+    public String getCode() { return code; }
+    public String getEndDestination() { return endDestination; }
+    public String getAirlineName() { return airlineName; }
+    public int getPassengerCapacity() { return passengerCapacity; }
+    public double getLuggageWeightLimit() { return luggageWeightLimit; }
+    public double getLuggageVolumeLimit() { return luggageVolumeLimit; }
+
+}
