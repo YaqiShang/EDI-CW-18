@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CheckInInterface",
+            "request": "launch",
+            "mainClass": "GUI.CheckInInterface",
+            "projectName": "EDI-CW-18_cb57d2c6"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
