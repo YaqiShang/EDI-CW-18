@@ -17,12 +17,16 @@ public class CheckInInterface extends JFrame{
 	private JTextField baggageWeightField;
 	private JTextField baggageDimensionsField;
 	private JButton checkInButton;
+	private JButton quitButton;
 	private JTextArea resultArea;
+	private JLabel feeLabel;
 	
 	public CheckInInterface() {
 		setTitle("Electronic Check-In Kiosk");
-		setSize(600, 300);
+		setSize(600, 320);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
 		initUI();
 	}
 	
@@ -35,12 +39,31 @@ public class CheckInInterface extends JFrame{
 		baggageWeightField = new JTextField();
 		baggageDimensionsField = new JTextField();
 
+		feeLabel = new JLabel();
+
+		quitButton = new JButton();
 
 		Dimension labelsize_short = new Dimension(130, 30);
 		Dimension labelsize_long = new Dimension(150, 30);
 		Color mihuang = new Color(0xffffeb);
 		Color lanse = new Color(18,120,200);
+		Color hongse = new Color(0x8c0606);
 		ImageIcon imageIcon = new ImageIcon("GUI/baggage.jpg");
+		Border border = BorderFactory.createLineBorder(lanse);
+		JSeparator separator = new JSeparator();
+
+		feeLabel.setText("( Total Fee: 0 )");
+        
+
+		JPanel panel_sep = new JPanel();
+
+		separator.setForeground(lanse);
+		panel_sep.setBackground(mihuang);
+		panel_sep.setPreferredSize(new Dimension(600, 0));
+		// separator.setPreferredSize(new Dimension(separator.getPreferredSize().width, 10)); // 将 10 改成您希望的粗细值
+
+
+
 
 		checkInButton = new JButton();
 		resultArea = new JTextArea();
@@ -63,7 +86,7 @@ public class CheckInInterface extends JFrame{
 
 
 		JPanel panel_fl = new JPanel();
-		panel_fl.setPreferredSize(new Dimension(600, 0));
+		panel_fl.setPreferredSize(new Dimension(600, 10));
 
 		JPanel panel_name = new JPanel();
 		lastNameField.setPreferredSize(new Dimension(90, 30));
@@ -87,16 +110,16 @@ public class CheckInInterface extends JFrame{
 		JPanel panel_bweight = new JPanel();
 		JPanel panel_bdimension = new JPanel();
 		JPanel panel_sl = new JPanel();
-		panel_sl.setPreferredSize(new Dimension(600, 0));
+		panel_sl.setPreferredSize(new Dimension(600, 20));
 
-		JLabel label_bweight = new JLabel("Baggage Weight:");
+		JLabel label_bweight = new JLabel("Baggage Weight(kg):");
 		label_bweight.setPreferredSize(labelsize_short);
 
 		panel_bweight.add(label_bweight);
 		baggageWeightField.setPreferredSize(new Dimension(90, 30));
 		panel_bweight.add(baggageWeightField);
 
-		JLabel label_bdimension = new JLabel("Baggage Dimensions:");
+		JLabel label_bdimension = new JLabel("Baggage Size(LxWxH):");
 		label_bdimension.setPreferredSize(labelsize_long);
 
 		
@@ -107,43 +130,25 @@ public class CheckInInterface extends JFrame{
 		panel_sl.add(panel_bweight);
 		panel_sl.add(panel_bdimension);
 		add(panel_sl);
-		
-		// // 设置布局管理器
-		// panel_fl.setLayout(new GridBagLayout());
-		// panel_sl.setLayout(new GridBagLayout());
-		// GridBagConstraints gbc = new GridBagConstraints();
-		// gbc.gridwidth = GridBagConstraints.RELATIVE; // 设置这个组件是行中的倒数第二个
-		// gbc.fill = GridBagConstraints.HORIZONTAL;    // 设置这个组件水平填充空间
-
-		// // 第一行
-		// bookingRefField.setPreferredSize(new Dimension(200, 30));
-		// JLabel labelRef = new JLabel("Booking Reference:");
-		// gbc.weightx = 0.1;  // 设置这个组件随窗体变化的权重
-		// panel_fl.add(labelRef, gbc);
-
-		// gbc.weightx = 1.0;  // 设置这个组件随窗体变化的权重
-		// panel_fl.add(bookingRefField, gbc);
-
-		// // 第二行
-		// baggageWeightField.setPreferredSize(new Dimension(120, 30));
-		// JLabel labelWeight = new JLabel("Baggage Weight:");
-		// gbc.weightx = 0.1;  // 设置这个组件随窗体变化的权重
-		// panel_sl.add(labelWeight, gbc);
-
-		// gbc.weightx = 1.0;  // 设置这个组件随窗体变化的权重
-		// panel_sl.add(baggageWeightField, gbc);
-
-		// // 添加到主面板
-		// add(panel_fl);
-		// add(panel_sl);
 
 		JPanel panel_tl = new JPanel();
-		JLabel picture = new JLabel(imageIcon);
-		add(picture);
+
+		panel_sep.add(feeLabel);
+		// JLabel picture = new JLabel(imageIcon);
+		// add(picture);
+
+		// panel_sep.add(separator);
+		panel_sep.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, lanse)); // 上边框作为分隔线
+		add(panel_sep);
 
 		checkInButton.setPreferredSize(new Dimension(100, 40));
 		checkInButton.setText("Check In");
 		panel_tl.add(checkInButton);
+		add(panel_tl);
+
+		quitButton.setPreferredSize(new Dimension(100, 40));
+		quitButton.setText("Quit");
+		panel_tl.add(quitButton);
 		add(panel_tl);
 
 		panel_fl.setBackground(mihuang);
@@ -154,10 +159,25 @@ public class CheckInInterface extends JFrame{
 		panel_ref.setBackground(mihuang);
 		panel_tl.setBackground(mihuang);
 
+		// lastNameField.setFont(new Font(lastNameField.getFont().getName(), Font.PLAIN, 15));
+		feeLabel.setForeground(hongse);
+		feeLabel.setFont(new Font(feeLabel.getFont().getName(), Font.PLAIN, 12));
+
+		// panel_all.add(panel_fl);
+		// panel_all.add(panel_sl);
+		// add(panel_all);
+		// panel_all.add(panel_fl);
+
+		// panel_all.setBorder(border);
+		// panel_ref.setBorder(border);
+		quitButton.setBackground(lanse);
+		quitButton.setForeground(hongse);
+
 		checkInButton.setBackground(lanse);
 		checkInButton.setForeground(lanse);
 
 		checkInButton.setFont(new Font(checkInButton.getFont().getName(), Font.PLAIN, 16));
+		quitButton.setFont(new Font(checkInButton.getFont().getName(), Font.PLAIN, 16));
 		// lastNameField.setBackground(());
 
 
@@ -172,10 +192,36 @@ public class CheckInInterface extends JFrame{
 		// add(new JScrollPane(resultArea));
 
 		checkInButton.addActionListener(e -> handleCheckIn());
+		quitButton.addActionListener(e -> handleQuit());
 
 	}
 
 	private void handleCheckIn(){
+		String weightText = baggageWeightField.getText();
+        String dimensionsText = baggageDimensionsField.getText();
+        double weight = Double.parseDouble(weightText);
+        String[] dimensions = dimensionsText.split(" ");
+        double length = Double.parseDouble(dimensions[0]);
+        double width = Double.parseDouble(dimensions[1]);
+        double height = Double.parseDouble(dimensions[2]);
+        double volume = length * width * height;
+
+		double extraWeightFee = 0;
+        double extraVolumeFee = 0;
+
+		if (weight > 20) {
+            extraWeightFee = (weight - 20) * 10;
+        }
+
+        if (volume > 10) {
+            extraVolumeFee = 10;
+        }
+
+        double totalFee = extraWeightFee + extraVolumeFee;
+        feeLabel.setText("( Weight Fee: "+extraWeightFee+"    Total Fee: " + totalFee+"   Volume Fee: "+extraVolumeFee + " )");
+	}
+
+	private void handleQuit(){
 
 	}
 
