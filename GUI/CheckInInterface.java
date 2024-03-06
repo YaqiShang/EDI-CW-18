@@ -9,6 +9,11 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Panel;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CheckInInterface extends JFrame{
@@ -20,6 +25,11 @@ public class CheckInInterface extends JFrame{
 	private JButton quitButton;
 	private JTextArea resultArea;
 	private JLabel feeLabel;
+
+	private List<String> lastNameList = new ArrayList<>();
+    private List<String> bookingRefList = new ArrayList<>();
+    private List<String> baggageWeightList = new ArrayList<>();
+    private List<String> baggageDimensionsList = new ArrayList<>();
 	
 	public CheckInInterface() {
 		setTitle("Electronic Check-In Kiosk");
@@ -222,8 +232,32 @@ public class CheckInInterface extends JFrame{
 	}
 
 	private void handleQuit(){
+		String lastName = lastNameField.getText();
+        String bookingRef = bookingRefField.getText();
+        String baggageWeight = baggageWeightField.getText();
+        String baggageDimensions = baggageDimensionsField.getText();
+
+        lastNameList.add(lastName);
+        bookingRefList.add(bookingRef);
+        baggageWeightList.add(baggageWeight);
+        baggageDimensionsList.add(baggageDimensions);
+
+		writeToTextFile();
+		dispose();
 
 	}
+
+	private void writeToTextFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("check_In_Report.txt", true))) {
+            for (int i = 0; i < lastNameList.size(); i++) {
+                String line = lastNameList.get(i) + ", " + bookingRefList.get(i) + ", " + baggageWeightList.get(i) + ", " + baggageDimensionsList.get(i);
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
