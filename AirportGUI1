@@ -1,0 +1,91 @@
+package ass1;//import all the GUI classes
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ * Simple GUI for airport check application
+ */
+public class AirportGUI1 extends JFrame implements ActionListener
+{
+    // logic manager
+    AirportManager manager;
+    
+    //GUI components
+    JTextField result;
+    JTextField nameField, codeField, sizeField, weightField;
+    JButton search;
+    JScrollPane scrollList;
+    JButton showListById, showListByName;
+    JTextArea displayList;
+    
+    /**
+     * Create the frame with its panels.
+     * @param list	The staff list to be searched.
+     */
+    public AirportGUI1(AirportManager manager)
+    {
+        this.manager = manager;
+        
+        //set up window title
+        setTitle("Airport");
+        //ensure program ends when window closes
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+ 
+        //search panel contains label, text field and button
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new GridLayout(5,2));
+        searchPanel.add(new JLabel("Passenger Name"));
+        nameField = new JTextField(5);
+        searchPanel.add(nameField);
+        searchPanel.add(new JLabel("Flight Code"));
+        codeField = new JTextField(5);
+        searchPanel.add(codeField);
+        searchPanel.add(new JLabel("Baggage Weight"));
+        weightField = new JTextField(5);
+        searchPanel.add(weightField);
+        searchPanel.add(new JLabel("Baggage Size"));
+        sizeField = new JTextField(5);
+        searchPanel.add(sizeField);
+        search = new JButton("Check");
+        searchPanel.add(search);
+        // input passenger name, flight code, baggage size and weight
+        //specify action when button is pressed
+        search.addActionListener(this) ;
+        
+        //Set up the area where the results will be displayed.
+//        result= new JTextField(25);
+//        result.setEditable(false);
+        
+        //set up south panel containing 2 previous areas
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new GridLayout(1,1));
+        southPanel.add(searchPanel);
+        // southPanel.add(result);
+        
+        //add south panel to the content pane
+        Container contentPane = getContentPane();
+        contentPane.add(southPanel, BorderLayout.NORTH);
+        
+        //add north panel containing some buttons
+//        JPanel northPanel = new JPanel();
+//        showListById = new JButton("List By ID");
+//        showListById.addActionListener(this);
+//        showListByName = new JButton("List By Name");
+//        showListByName.addActionListener(this);
+//        northPanel.add (showListById);
+//        northPanel.add(showListByName);
+//        contentPane.add(northPanel, BorderLayout.NORTH);
+//
+        displayList = new JTextArea(5,20);
+        displayList.setFont(new Font (Font.MONOSPACED, Font.PLAIN,14));
+        displayList.setEditable(false);
+        scrollList = new JScrollPane(displayList);
+        contentPane.add(scrollList,BorderLayout.CENTER);
+        
+        //pack and set visible
+        pack();
+        setVisible(true);
+    }
