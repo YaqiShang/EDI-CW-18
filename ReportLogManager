@@ -1,0 +1,52 @@
+package ass1;
+
+import javax.swing.*;
+import java.util.List;
+
+/**
+ * @CW18
+ */
+public class AirportManager {
+    private List<BookPassenger> passengers;
+    private List<AirFlight> airFlights;
+
+
+    public AirportManager(List<BookPassenger> passengers, List<AirFlight> airFlights) {
+        this.passengers = passengers;
+        this.airFlights = airFlights;
+    }
+
+    public AirFlight getAirFlight(String code){
+        for(AirFlight airFlight : airFlights){
+            if(airFlight.getFlightCode().equals(code)){
+                return airFlight;
+            }
+        }
+        return null;
+    }
+
+    public String check(String name, String code, int weight, int size){
+        for(BookPassenger bookPassenger : passengers){
+            if(bookPassenger.getPassenger().equals(name) && bookPassenger.getFlightCode().equals(code)){
+                AirFlight airFlight = getAirFlight(code);
+                if(airFlight == null){
+                    return code + " flight not exist";
+                }else{
+                    int cost = 0;
+                    cost += OverCostCalculate.getInstance().getOverSizeCost(size, code);
+                    cost += OverCostCalculate.getInstance().getOverWeightCost(weight, code);
+                    bookPassenger.setVolume(size);
+                    bookPassenger.setWeight(weight);
+                    bookPassenger.setChecked(true);
+                    bookPassenger.setOverCost(cost);
+                    return name + " checked flight " + code + ", over cost: " + cost;
+                }
+            }
+        }
+        return name + " not in book list";
+    }
+
+    public List<AirFlight> getAirFlights() {
+        return airFlights;
+    }
+}
