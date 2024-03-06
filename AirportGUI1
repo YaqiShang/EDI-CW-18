@@ -89,3 +89,23 @@ public class AirportGUI1 extends JFrame implements ActionListener
         pack();
         setVisible(true);
     }
+
+    
+    public void actionPerformed(ActionEvent e) 
+    { 
+    	if (e.getSource() == search) {
+            //get search text
+            int weight, size;
+            try {
+                weight = Integer.parseInt(weightField.getText().trim());
+                size = Integer.parseInt(sizeField.getText().trim());
+            } catch (Exception ee) {
+                displayList.setText("weight and size must be integer number");
+                return;
+            }
+            displayList.setText(manager.check(nameField.getText().trim(), codeField.getText().trim(),
+                    weight, size));
+        }
+    }  
+
+}
