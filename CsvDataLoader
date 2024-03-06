@@ -1,0 +1,64 @@
+package ass1;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @CW18
+ */
+public class CsvDataLoader extends DataLoader {
+    @Override
+    public List<BookPassenger> loadBookList() {
+        try {
+            List<BookPassenger> res = new ArrayList<>();
+            BufferedReader reader = new BufferedReader(new FileReader("src/ass1/book_list.csv"));
+            reader.readLine();
+            while (reader.ready()){
+                String line = reader.readLine();
+                String[] ss = line.split(",");
+                if(ss.length != 5){
+                    throw new InvalidFormatException();
+                }
+                res.add(new BookPassenger(ss[0], ss[1], Boolean.parseBoolean(ss[2]),
+                        Integer.parseInt(ss[3]), Integer.parseInt(ss[4])));
+            }
+            return res;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }catch (IOException e){
+            e.printStackTrace();
+        }catch (InvalidFormatException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<AirFlight> loadAirFlight() {
+        try {
+            List<AirFlight> res = new ArrayList<>();
+            BufferedReader reader = new BufferedReader(new FileReader("src/ass1/flight.csv"));
+            reader.readLine();
+            while (reader.ready()){
+                String line = reader.readLine();
+                String[] ss = line.split(",");
+                if(ss.length != 6){
+                    throw new InvalidFormatException();
+                }
+                res.add(new AirFlight(ss[0], ss[1], ss[2], Integer.parseInt(ss[3]), Integer.parseInt(ss[4]), Integer.parseInt(ss[5])));
+            }
+            return res;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }catch (IOException e){
+            e.printStackTrace();
+        }catch (InvalidFormatException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
