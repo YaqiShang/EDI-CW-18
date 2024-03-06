@@ -1,0 +1,58 @@
+package ass1;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @CW18
+ */
+public class AirFlight {
+    private String flightCode;
+    private String destination;
+    private String carrier;
+    private int maxPassengers;
+    private int maxWeight;
+    private int maxVolume;
+
+    private List<BookPassenger> passengerList = new ArrayList<>();
+
+    public AirFlight(String flightCode, String destination, String carrier, int maxPassengers, int maxWeight, int maxVolume) {
+        this.flightCode = flightCode;
+        this.destination = destination;
+        this.carrier = carrier;
+        this.maxPassengers = maxPassengers;
+        this.maxWeight = maxWeight;
+        this.maxVolume = maxVolume;
+    }
+
+    public String getFlightCode() {
+        return flightCode;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public String getCarrier() {
+        return carrier;
+    }
+
+    public int getMaxPassengers() {
+        return maxPassengers;
+    }
+
+    public int getMaxWeight() {
+        return maxWeight;
+    }
+
+    public int getMaxVolume() {
+        return maxVolume;
+    }
+
+    public void addPassengerList(BookPassenger passenger) {
+        this.passengerList.add(passenger);
+    }
+    public List<BookPassenger> getPassengerList() {
+        return passengerList;
+    }
+}
