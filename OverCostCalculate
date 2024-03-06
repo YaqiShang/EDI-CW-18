@@ -1,0 +1,24 @@
+package ass1;
+
+/**
+ * @CW18
+ */
+public class OverCostCalculate {
+    private static OverCostCalculate instance = new OverCostCalculate();
+    public static OverCostCalculate getInstance(){
+        return instance;
+    }
+
+    public int getOverSizeCost(int size, String flightCode){
+        if(size <= 100){
+            return 0;
+        }
+        return 10;
+    }
+    public int getOverWeightCost(int weight, String flightCode){
+        if(weight <= 10){
+            return 0;
+        }
+        return 10;
+    }
+}
