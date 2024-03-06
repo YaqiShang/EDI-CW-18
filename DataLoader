@@ -1,0 +1,11 @@
+package ass1;
+
+import java.util.List;
+
+/**
+ * @CW18
+ */
+public abstract class DataLoader {
+    public abstract List<BookPassenger> loadBookList();
+    public abstract List<AirFlight> loadAirFlight();
+}
