@@ -1,24 +1,32 @@
 package ass1;
 
 /**
- * @CW18
+ * @date 2024/3/4
  */
 public class OverCostCalculate {
     private static OverCostCalculate instance = new OverCostCalculate();
+
     public static OverCostCalculate getInstance(){
         return instance;
     }
 
     public int getOverSizeCost(int size, String flightCode){
-        if(size <= 100){
+        if(size < 0){
+            throw new IllegalArgumentException("Size cannot be negative.");
+        }
+        if(size <= 10){
             return 0;
         }
-        return 10;
+        return 50;
     }
+
     public int getOverWeightCost(int weight, String flightCode){
-        if(weight <= 10){
+        if(weight < 0){
+            throw new IllegalArgumentException("Weight cannot be negative.");
+        }
+        if(weight <= 20){
             return 0;
         }
-        return 10;
+        return (weight-20)*10;
     }
 }
