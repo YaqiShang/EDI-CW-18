@@ -1,0 +1,144 @@
+package ass1;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+
+public class TestMyData2 {
+
+    /*
+     * Tests method to return date in format dd/mm/yyyy
+     * numbers < 10 need a leading 0 for day and month
+     */
+	
+	
+    private AirportManager manager;
+
+    @BeforeEach
+    void setUp() throws InvalidFlightException {
+        List<BookPassenger> passengers = new ArrayList<>();
+        List<AirFlight> airFlights = new ArrayList<>();
+
+        AirFlight validFlight = new AirFlight("FL123", "Destination", "Carrier", 200, 10000, 10000);
+        BookPassenger validPassenger = new BookPassenger("John", "Doe", null, false, 25, 160);
+
+        airFlights.add(validFlight);
+        passengers.add(validPassenger);
+
+        AirportManager airportManager = new AirportManager(passengers, airFlights);
+    }
+
+    
+    @Test
+    public void testGetPassengerName() {
+        String expectedName = "John Doe";
+        //Object bookPassenger;
+        BookPassenger bookPassenger = new BookPassenger("John Doe", "FL123", expectedName, false, 20, 5);
+		String actualName = bookPassenger.getPassenger();
+        assertEquals(expectedName, actualName, "The passenger name should match the expected result.");
+    }
+	
+	
+    
+
+    @Test
+    public void testFindByFlightCode() throws InvalidFlightException {
+        // Initialize AirportManager with some flights and passengers
+        AirFlight flight1 = new AirFlight("FL123", "New York", "Airways", 180, 2000, 10000);
+        AirFlight flight2 = new AirFlight("FL456", "Los Angeles", "Airways", 180, 2000, 10000);
+        AirportManager manager = new AirportManager(Arrays.asList(), Arrays.asList(flight1, flight2));
+    	
+        AirFlight foundFlight = manager.getAirFlight("FL123");
+        assertNotNull(foundFlight, "Flight with code FL123 should be found.");
+        assertEquals("New York", foundFlight.getDestination(), "The destination of FL123 should be New York.");
+
+        AirFlight notFoundFlight = manager.getAirFlight("FL999");
+        assertNull(notFoundFlight, "Flight with code FL999 should not be found.");
+    }
+    
+//    @Test
+//    public void testGetWeightByFlight() {
+//    	 manager = new AirportManager();
+//    	 
+//    	// Assuming we have added a flight with the code "FL123" and passengers with known weights
+//        int expectedTotalWeight = /* the sum of the weights of all passengers on flight FL123 */;
+//        int actualTotalWeight = manager.getWeightByFlight("FL123");
+//        
+//        assertEquals(expectedTotalWeight, actualTotalWeight, "The total weight calculated should match the expected weight.");
+//    }
+    
+    
+    @Test
+    void testInvalidPassengerName() {
+        String[] invalidNames = {"", "  ", null};
+        for (String name : invalidNames) {
+            Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> new BookPassenger(name, "FL123", name, false, 20, 10));
+            assertNotNull(exception.getMessage());
+        }
+    }
+    
+//    @Test
+//    public void testInvalidFlightCode() throws InvalidFlightException {
+//    	this.manager = new AirportManager(new ArrayList<>(), new ArrayList<>());
+//        // The getAirFlight method is private, so we test it indirectly
+//        // Assuming there's a method to retrieve a flight by code in AirportManager
+//        String invalidFlightCode = "INVALID_CODE";
+//        AirFlight flight = manager.getAirFlight(invalidFlightCode);
+//        
+//        assertNull(flight, "Retrieving a flight with an invalid code should return null.");
+//    }
+
+    @Test
+    public void testInvalidFlightCode() throws InvalidFlightException {
+        List<AirFlight> airFlights = new ArrayList<>();
+        airFlights.add(new AirFlight("VALID_CODE", "Some Destination", "Some Carrier", 100, 2000, 3000));
+        List<BookPassenger> passengers = new ArrayList<>();
+
+        manager = new AirportManager(passengers, airFlights);
+        String invalidFlightCode = "INVALID_CODE";
+        AirFlight flight = manager.getAirFlight(invalidFlightCode);
+        
+        assertNull(flight, "Retrieving a flight with an invalid code should return null.");
+    
+    }
+   
+    
+//    
+//    @Test
+//    public void testGetDDMMYYYY() {
+//        String expected1 = "31/12/2007";
+//        String message1 = "Failed for d = 31, m = 12\n";
+//        assertEquals(message1, expected1, expected1);
+//        String expected2 = "01/01/2007";
+//        String message2 =  "Failed for d = 1, m = 1\n";
+//        assertEquals(message2, expected2, expected1);
+//    }
+//    
+//    @Test
+//    public void testIsThisCentury() {
+//    }
+//
+//    /*
+//     * tests that 2 dates are equal.
+//     * Test all components diff, 2 same, all same
+//     */
+//    @Test
+//    public void testEquals() {
+//    }
+//
+//    @Test
+//    public void testCompareTo() {
+//    }
+//
+//
+//    /**
+//  
+}
