@@ -40,7 +40,7 @@ public class AirportGUI1 extends JFrame implements ActionListener
         searchPanel.add(new JLabel("Passenger Name"));
         nameField = new JTextField(5);
         searchPanel.add(nameField);
-        searchPanel.add(new JLabel("Flight Code"));
+        searchPanel.add(new JLabel("Booking Reference Code"));
         codeField = new JTextField(5);
         searchPanel.add(codeField);
         searchPanel.add(new JLabel("Baggage Weight"));
@@ -89,7 +89,6 @@ public class AirportGUI1 extends JFrame implements ActionListener
         pack();
         setVisible(true);
     }
-
     
     public void actionPerformed(ActionEvent e) 
     { 
