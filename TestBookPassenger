@@ -1,0 +1,46 @@
+package ass1;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class TestBookPassenger {
+
+    private BookPassenger validPassenger;
+
+    @BeforeEach
+    void setUp() {
+        // Initialize a valid BookPassenger instance with positive weight and volume
+        validPassenger = new BookPassenger("John Doe", "FL123", null, false, 25, 160);
+    }
+
+    @Test
+    void testVolume() {
+        // Check that the volume is as expected
+        assertEquals(160, validPassenger.getVolume(), "The volume should match the expected value.");
+    }
+
+    @Test
+    void testNegativeVolumeException() {
+        // Check that an exception is thrown when a negative volume is used
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new BookPassenger("John Doe", "FL123", null, false, 25, -160); // negative volume
+        });
+        assertTrue(exception.getMessage().contains("Volume cannot be negative"), "Exception message should indicate negative volume is not allowed.");
+    }
+
+    @Test
+    void testWeight() {
+        // Check that the weight is as expected
+        assertEquals(25, validPassenger.getWeight(), "The weight should match the expected value.");
+    }
+
+    @Test
+    void testNegativeWeightException() {
+        // Check that an exception is thrown when a negative weight is used
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new BookPassenger("John Doe", "FL123", null, false, -25, 160); // negative weight
+        });
+        assertTrue(exception.getMessage().contains("Weight cannot be negative"), "Exception message should indicate negative weight is not allowed.");
+    }
+}
