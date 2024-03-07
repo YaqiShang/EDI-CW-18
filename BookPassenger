@@ -1,10 +1,10 @@
 package ass1;
 
 /**
- * @CW18
+ * @date 2024/3/4
  */
 public class BookPassenger {
-
+    private String bookCode;
     private String passenger;
     private String flightCode;
     private boolean checked;
@@ -14,16 +14,25 @@ public class BookPassenger {
 
     private int overCost;
 
-    public BookPassenger(String passenger, String flightCode, boolean checked, int weight, int volume) {
-        if (passenger == null || passenger.trim().isEmpty()) {
+    public BookPassenger(String bookCode, String passenger, String flightCode, boolean checked, int weight, int volume) {
+		if (passenger == null || passenger.trim().isEmpty()) {if (passenger == null || passenger.trim().isEmpty()) {
             throw new IllegalArgumentException("Passenger name cannot be null or empty");
+        }}
+    	if (volume < 0) {
+            throw new IllegalArgumentException("Volume cannot be negative.");
         }
-    	
+        if (weight < 0) {
+            throw new IllegalArgumentException("Weight cannot be negative.");
+        }
+    	this.bookCode = bookCode;
         this.passenger = passenger;
         this.flightCode = flightCode;
         this.checked = checked;
         this.weight = weight;
         this.volume = volume;
+    }
+    public String getBookCode() {
+        return bookCode;
     }
 
     public void setChecked(boolean checked) {
@@ -59,11 +68,7 @@ public class BookPassenger {
     }
 
     public int getOverCost() {
-        //return overCost;
-        if(weight <= 10){
-            return 0;
-        }
-        return 10;
+        return overCost;
     }
 
     public void setOverCost(int overCost) {
