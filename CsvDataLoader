@@ -8,23 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @CW18
+ * @date 2024/3/4
  */
 public class CsvDataLoader extends DataLoader {
     @Override
     public List<BookPassenger> loadBookList() {
         try {
             List<BookPassenger> res = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader("src/ass1/book_list.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader("ass1/book_list.csv"));
             reader.readLine();
             while (reader.ready()){
                 String line = reader.readLine();
                 String[] ss = line.split(",");
-                if(ss.length != 5){
+                if(ss.length != 6){
                     throw new InvalidFormatException();
                 }
-                res.add(new BookPassenger(ss[0], ss[1], Boolean.parseBoolean(ss[2]),
-                        Integer.parseInt(ss[3]), Integer.parseInt(ss[4])));
+                res.add(new BookPassenger(ss[0], ss[1], ss[2], Boolean.parseBoolean(ss[3]),
+                        Integer.parseInt(ss[4]), Integer.parseInt(ss[5])));
             }
             return res;
         } catch (FileNotFoundException e) {
@@ -41,7 +41,7 @@ public class CsvDataLoader extends DataLoader {
     public List<AirFlight> loadAirFlight() {
         try {
             List<AirFlight> res = new ArrayList<>();
-            BufferedReader reader = new BufferedReader(new FileReader("src/ass1/flight.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader("ass1/flight.csv"));
             reader.readLine();
             while (reader.ready()){
                 String line = reader.readLine();
