@@ -1,52 +1,81 @@
 package ass1;
 
-import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * @CW18
+ * exit program, and create report, include every flight booked passenger, total baggage size and weight, over cost, and whether flight overweight
+ * When the application exits, it should generate a report.
+ * This should indicate, for each flight,
+ * the number of passengers checked-in,
+ * the total weight of their baggage,
+ * the total volume of their baggage,
+ * and the total excess baggage fees collected.
+ * It should also indicate whether the capacity of the flight is exceeded in any way.
+ * @date CW18
  */
-public class AirportManager {
-    private List<BookPassenger> passengers;
-    private List<AirFlight> airFlights;
-
-
-    public AirportManager(List<BookPassenger> passengers, List<AirFlight> airFlights) {
-        this.passengers = passengers;
-        this.airFlights = airFlights;
+public class ReportLogManager {
+    private static ReportLogManager instance = new ReportLogManager();
+    public static ReportLogManager getInstance(){
+        return instance;
     }
 
-    public AirFlight getAirFlight(String code){
-        for(AirFlight airFlight : airFlights){
-            if(airFlight.getFlightCode().equals(code)){
-                return airFlight;
-            }
-        }
-        return null;
-    }
-
-    public String check(String name, String code, int weight, int size){
-        for(BookPassenger bookPassenger : passengers){
-            if(bookPassenger.getPassenger().equals(name) && bookPassenger.getFlightCode().equals(code)){
-                AirFlight airFlight = getAirFlight(code);
-                if(airFlight == null){
-                    return code + " flight not exist";
-                }else{
-                    int cost = 0;
-                    cost += OverCostCalculate.getInstance().getOverSizeCost(size, code);
-                    cost += OverCostCalculate.getInstance().getOverWeightCost(weight, code);
-                    bookPassenger.setVolume(size);
-                    bookPassenger.setWeight(weight);
-                    bookPassenger.setChecked(true);
-                    bookPassenger.setOverCost(cost);
-                    return name + " checked flight " + code + ", over cost: " + cost;
+    public void report(List<BookPassenger> passengers, List<AirFlight> airFlights) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/Advanced Software Engineering/report.txt"))) {
+            for (AirFlight airFlight : airFlights) {
+                writer.write(airFlight.getFlightCode() + "\n");
+                int checked = 0;
+                int totalWeight = 0;
+                int totalSize = 0;
+                int totalFee = 0;
+                for (BookPassenger bookPassenger : passengers) {
+                    if(!bookPassenger.getFlightCode().equals(airFlight.getFlightCode())){
+                        continue;
+                    }
+                   
+					if(String.valueOf(bookPassenger.isChecked()) == "true"){
+                        writer.write("\t" + bookPassenger.getPassenger() + "    weight: " + bookPassenger.getWeight()
+                        + ",   size: " + bookPassenger.getVolume() + ",   over cost: " + bookPassenger.getOverCost()
+                        + ",   check: " + String.valueOf(bookPassenger.isChecked()) + "\n");
+                    }
+					if(String.valueOf(bookPassenger.isChecked()) == "false"){
+                        writer.write("\t" + bookPassenger.getPassenger() + "    weight:0 " + ",   size: 0" + ",   over cost: " + ",   check: false" +  "\n");
+					}
+              
+                    if(bookPassenger.isChecked()){
+                        checked ++;
+                        totalWeight += bookPassenger.getWeight();
+                        totalSize += bookPassenger.getVolume();
+                        totalFee += bookPassenger.getOverCost();
+                    }
                 }
+                writer.write("\n");
+                writer.write("The number of passengers checked-in: " + checked + "\n");
+                writer.write("The total weight of their baggage: " + totalWeight + "\n");
+                writer.write("The total volume of their baggage: " + totalSize + "\n");
+                writer.write("The total excess baggage fees collected: " + totalFee + "\n");
+                if(checked < airFlight.getMaxPassengers() && totalWeight < airFlight.getMaxWeight() && totalSize < airFlight.getMaxVolume()){
+                    writer.write("No flight capacity exceeded\n");
+                }
+                if(checked >= airFlight.getMaxPassengers()){
+                    writer.write("The number of people exceeds the flight capacity\n");
+                }
+                
+                if(totalSize > airFlight.getMaxVolume() && totalWeight < airFlight.getMaxWeight()){
+                    writer.write("Total luggage volume exceeds flight capacity\n");
+                }
+                if(totalSize < airFlight.getMaxVolume() && totalWeight > airFlight.getMaxWeight()){
+                    writer.write("Total luggage weight exceeds flight capacity\n");
+                }
+                if(totalSize > airFlight.getMaxVolume() && totalWeight > airFlight.getMaxWeight()){
+                    writer.write("Total luggage and size exceed flight capacity\n");
+                }
+                writer.write("\n");
+                writer.write("———————————————————————————————————————————————————————");
+                writer.write("\n");
             }
         }
-        return name + " not in book list";
-    }
-
-    public List<AirFlight> getAirFlights() {
-        return airFlights;
     }
 }
