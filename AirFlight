@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @CW18
+ * @date 2024/3/4
  */
 public class AirFlight {
+	//private String bookCode;
     private String flightCode;
     private String destination;
     private String carrier;
@@ -17,7 +18,8 @@ public class AirFlight {
     private List<BookPassenger> passengerList = new ArrayList<>();
 
     public AirFlight(String flightCode, String destination, String carrier, int maxPassengers, int maxWeight, int maxVolume) {
-        this.flightCode = flightCode;
+        //this.bookCode = bookCode;
+    	this.flightCode = flightCode;
         this.destination = destination;
         this.carrier = carrier;
         this.maxPassengers = maxPassengers;
@@ -25,6 +27,10 @@ public class AirFlight {
         this.maxVolume = maxVolume;
     }
 
+//    public String getBookCode() {
+//        return bookCode;
+//    }
+    
     public String getFlightCode() {
         return flightCode;
     }
