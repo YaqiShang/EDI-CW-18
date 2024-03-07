@@ -1,0 +1,50 @@
+package ass1;
+
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TestMyData {
+    private AirportManager airportManager;
+
+    @Before
+    public void setUp() throws InvalidFlightException {
+        List<BookPassenger> passengers = new ArrayList<>();
+        List<AirFlight> airFlights = new ArrayList<>();
+
+        AirFlight validFlight = new AirFlight("FL123", "Destination", "Carrier", 200, 10000, 10000);
+        BookPassenger validPassenger = new BookPassenger("John", "FL123", null, false, 25, 160);
+
+
+        airFlights.add(validFlight);
+        passengers.add(validPassenger);
+
+        airportManager = new AirportManager(passengers, airFlights);
+    }
+
+    @Test
+    public void testGetFlightRefFound() {
+        AirFlight flight = airportManager.getAirFlight("FL123");
+        assertNotNull("Flight with reference FL123 should be found", flight);
+    }
+
+    @Test
+    public void testGetFlightRefNotFound() {
+        AirFlight flight = airportManager.getAirFlight("INVALID_REF");
+        assertNull("No flight should be found with reference INVALID_REF", flight);
+    }
+
+//    @Test
+//    public void testGetPassengerMatch() {
+//        BookPassenger passenger = airportManager.getPassenger("FL123", "John");
+//        assertNotNull("Passenger with booking reference FL123 and last name John should be found", passenger);
+//    }
+
+    @Test
+    public void testGetPassengerNoMatch() {
+        BookPassenger passenger = airportManager.getPassenger("INVALID_PAX", "Unknown");
+        assertNull("No passenger should match the booking reference INVALID_PAX and last name Unknown", passenger);
+    }
+}
