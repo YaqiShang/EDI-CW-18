@@ -1,0 +1,78 @@
+package ass2;
+
+/**
+ * Thread for line up
+ * @date 2024/3/20
+ */
+public class LineUpConsumer implements Runnable{
+    private AirportManager manager;
+    private int index;
+    public LineUpConsumer(int index, AirportManager manager) {
+        this.index = index;
+        this.manager = manager;
+    }
+
+    
+    @Override
+    public void run() {
+        long startTime = System.currentTimeMillis(); // 获取开始时间
+        long endTime = startTime + 30 * 1000; // 设置结束时间为30秒后
+
+        // 循环直到当前时间超过了结束时间
+        while(System.currentTimeMillis() < endTime){
+            System.out.println("run " + index);
+            BookPassenger passenger = null;
+            synchronized(LineUpConsumer.class){
+                if(!manager.getPassengers().isEmpty()){
+                    passenger = manager.getPassengers().remove(0);
+                    ReportLogManager.getInstance().log(passenger.getPassenger() + " leave queue");
+                    manager.setDeskPass(index, passenger);
+                    manager.updateUI();
+                }
+            }
+            try{
+                Thread.sleep(AirportManager.SPEED); // 这里的SPEED控制每次循环的等待时间，对于整体时间控制影响不大，除非SPEED非常大
+            }catch (InterruptedException e){
+                // 可以在这里处理中断异常，如果需要
+            }
+            if(passenger != null) {
+                ReportLogManager.getInstance().log(passenger.getPassenger() + " boarding flight");
+                manager.addPassenger(passenger);
+                manager.setDeskPass(index, null);
+                manager.updateUI();
+            }
+        }
+        manager.setDeskPass(index, null); // 确保循环结束后清除当前处理的乘客信息
+    }
+
+    
+    
+    
+//    @Override
+//    public void run() {
+//        // after ten period of time, the check-in desks close
+//        for(int i = 0; i < 10; i ++){
+//            System.out.println("run " + index);
+//            BookPassenger passenger = null;
+//            synchronized(LineUpConsumer.class){
+//                if(!manager.getPassengers().isEmpty()){
+//                    passenger = manager.getPassengers().remove(0);
+//                    ReportLogManager.getInstance().log(passenger.getPassenger() + " leave queue");
+//                    manager.setDeskPass(index, passenger);
+//                    manager.updateUI();
+//                }
+//            }
+//            try{
+//                Thread.sleep(AirportManager.SPEED);
+//            }catch (InterruptedException e){
+//            }
+//            if(passenger != null) {
+//                ReportLogManager.getInstance().log(passenger.getPassenger() + " boarding flight");
+//                manager.addPassenger(passenger);
+//                manager.setDeskPass(index, null);
+//                manager.updateUI();
+//            }
+//        }
+//        manager.setDeskPass(index, null);
+//    }
+}
