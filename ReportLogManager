@@ -1,4 +1,4 @@
-package ass1;
+/**package ass1;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -74,6 +74,58 @@ public class ReportLogManager {
                 }
                 writer.write("\n");
                 writer.write("———————————————————————————————————————————————————————");
+                writer.write("\n");
+            }
+        }
+    }
+}
+*/
+
+
+package ass2;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * exit program, and create report, include every flight booked passenger, total baggage size and weight, over cost, and whether flight overweight
+ * @date 2024/3/20
+ */
+public class ReportLogManager {
+    private static ReportLogManager instance = new ReportLogManager();
+    public static ReportLogManager getInstance(){
+        return instance;
+    }
+
+    static {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/Advanced Software Engineering/log.txt"))) {
+            writer.write("");
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void log(String log){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/Advanced Software Engineering/log.txt", true))) {
+            writer.write(log + "\n");
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public void report(List<BookPassenger> passengers, List<AirFlight> airFlights) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:/Advanced Software Engineering/report.txt"))) {
+            for (AirFlight airFlight : airFlights) {
+                writer.write(airFlight.getFlightCode() + "\n");
+                for (BookPassenger bookPassenger : passengers) {
+                    if(!bookPassenger.getFlightCode().equals(airFlight.getFlightCode())){
+                        continue;
+                    }
+                    writer.write("\t" + bookPassenger.getPassenger() + " weight: " + bookPassenger.getWeight()
+                            + ", size: " + bookPassenger.getVolume() + ", over cost: " + bookPassenger.getOverCost()
+                            + ", check: " + String.valueOf(bookPassenger.isChecked()) + "\n");
+                }
                 writer.write("\n");
             }
         }
