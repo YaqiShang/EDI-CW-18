@@ -1,0 +1,142 @@
+package ass2;
+
+import javax.swing.*;
+import java.util.List;
+
+/**
+ * @date 2024/3/24
+ */
+public class AirportManager {
+    private List<BookPassenger> passengers;
+    private List<AirFlight> airFlights;
+
+    private AirportGUI2 gui;
+
+    private BookPassenger[] deskPasses = new BookPassenger[2];
+
+    public static int SPEED = 5000;
+
+    public void setGui(AirportGUI2 gui) {
+        this.gui = gui;
+    }
+
+    public AirportManager(List<BookPassenger> passengers, List<AirFlight> airFlights) {
+        this.passengers = passengers;
+        this.airFlights = airFlights;
+    }
+
+    public void setDeskPass(int index, BookPassenger deskPass) {
+        this.deskPasses[index] = deskPass;
+    }
+
+    public List<BookPassenger> getPassengers() {
+        return passengers;
+    }
+
+    public void addPassenger(BookPassenger passenger){
+        for(AirFlight airFlight : airFlights){
+            if(airFlight.getFlightCode().equals(passenger.getFlightCode())){
+                airFlight.addPassengerList(passenger);
+            }
+        }
+    }
+
+    private AirFlight getAirFlight(String code){
+        for(AirFlight airFlight : airFlights){
+            if(airFlight.getFlightCode().equals(code)){
+                return airFlight;
+            }
+        }
+        return null;
+    }
+
+    void updateUI(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("There are current " + passengers.size() + " people waiting in the queue:").append("\n");
+//        for(BookPassenger bookPassenger : passengers){
+//            sb.append(bookPassenger.getPassenger() + "\t\t" + bookPassenger.getFlightCode() + "\t\t"
+//                + bookPassenger.getWeight() + "kg\t" + bookPassenger.getVolume() + "x" +
+//                    bookPassenger.getVolume() + "x" + bookPassenger.getVolume()).append("\n");
+//        }
+        for(BookPassenger bookPassenger : passengers){
+            sb.append(bookPassenger.getPassenger() + "\t\t" + bookPassenger.getFlightCode() + "\t\t"
+                + bookPassenger.getWeight() + "kg\t" + bookPassenger.getVolume()).append("\n");
+        }
+        gui.getDisplayList().setText(sb.toString());
+
+        sb = new StringBuilder();
+        sb.append("Desk 1\n");
+        if(deskPasses[0] != null){
+            sb.append(deskPasses[0].getPassenger() + " is dropping off 1 bag of"
+                + deskPasses[0].getWeight() + "kg");
+            int cost = OverCostCalculate.getInstance().getOverWeightCost(deskPasses[0].getWeight(), deskPasses[0].getFlightCode());
+            if(cost == 0){
+                sb.append("No baggage fee is due.\n");
+            }else{
+                sb.append("A baggage fee of " + cost + " is due.\n");
+            }
+        }else{
+            sb.append(" closed");
+        }
+        gui.getDesk1().setText(sb.toString());
+
+        sb = new StringBuilder();
+        sb.append("Desk 2\n");
+        if(deskPasses[1] != null){
+            sb.append(deskPasses[1].getPassenger() + " is dropping off 1 bag of"
+                    + deskPasses[1].getWeight() + "kg");
+            int cost = OverCostCalculate.getInstance().getOverWeightCost(deskPasses[1].getWeight(), deskPasses[1].getFlightCode());
+            if(cost == 0){
+                sb.append("No baggage fee is due.\n");
+            }else{
+                sb.append("A baggage fee of " + cost + " is due.\n");
+            }
+        }else{
+            sb.append(" closed");
+        }
+        gui.getDesk2().setText(sb.toString());
+
+        // show flight
+        for(AirFlight airFlight : airFlights){
+            sb = new StringBuilder();
+            JTextArea jTextArea = gui.getAirFlights().get(airFlight.getFlightCode());
+            sb.append(airFlight.getFlightCode() + "\n");
+
+            sb.append(String.format("%d checked in of %d\n", airFlight.getPassengerList().size(),
+                    airFlight.getMaxPassengers()));
+            int weight = 0;
+            for(BookPassenger passenger : airFlight.getPassengerList()){
+                weight += passenger.getWeight();
+            }
+            int radio = 100*weight/airFlight.getMaxWeight();
+            sb.append(String.format("Hold is %d%% full\n", radio));
+
+            jTextArea.setText(sb.toString());
+        }
+    }
+
+    public String check(String name, String code, int weight, int size){
+        for(BookPassenger bookPassenger : passengers){
+            if(bookPassenger.getPassenger().equals(name) && bookPassenger.getFlightCode().equals(code)){
+                AirFlight airFlight = getAirFlight(code);
+                if(airFlight == null){
+                    return code + " flight not exist";
+                }else{
+                    int cost = 0;
+                    cost += OverCostCalculate.getInstance().getOverSizeCost(size, code);
+                    cost += OverCostCalculate.getInstance().getOverWeightCost(weight, code);
+                    bookPassenger.setVolume(size);
+                    bookPassenger.setWeight(weight);
+                    bookPassenger.setChecked(true);
+                    bookPassenger.setOverCost(cost);
+                    return name + " checked flight " + code + ", over cost: " + cost;
+                }
+            }
+        }
+        return name + " not in book list";
+    }
+
+    public List<AirFlight> getAirFlights() {
+        return airFlights;
+    }
+}
